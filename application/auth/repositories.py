@@ -59,13 +59,6 @@ class UsersPostgreSQLRepository(UsersAbstractRepository):
 
     @staticmethod
     async def add_one(data: dict) -> User:
-        """
-        Добавляет нового пользователя в базу данных.
-        Args:
-            data (dict): Данные для создания пользователя.
-        Returns:
-            User: Пользователь.
-        """
         async with async_session() as session:
             user = User(**data)
             session.add(user)
@@ -75,13 +68,6 @@ class UsersPostgreSQLRepository(UsersAbstractRepository):
 
     @staticmethod
     async def get_one_by_email(email: str) -> Optional[User]:
-        """
-        Получает пользователя по email.
-        Args:
-            email (str): Электронная почта пользователя.
-        Returns:
-            Optional[User]: Пользователь или None, если не найден.
-        """
         async with async_session() as session:
             query = select(User).where(User.email == email)
             result = await session.execute(query)
@@ -89,13 +75,6 @@ class UsersPostgreSQLRepository(UsersAbstractRepository):
 
     @staticmethod
     async def get_one(id: int) -> Optional[User]:
-        """
-        Получает пользователя по ID.
-        Args:
-            id (int): Идентификатор пользователя.
-        Returns:
-            Optional[User]: Пользователь или None, если не найден.
-        """
         async with async_session() as session:
             result = await session.get(User, id)
             return result
