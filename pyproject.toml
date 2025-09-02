@@ -1,0 +1,11 @@
+[tool.pytest.ini_options]
+pythonpath = [".", "application"]
+testpaths = [
+    "tests/integrations",
+]
+
+asyncio_mode="auto"
+
+[tool.black]
+line-length = 89
+target-version = ['py312']
