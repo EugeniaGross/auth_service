@@ -5,7 +5,7 @@ from sqlmodel import SQLModel, Field
 class User(SQLModel, table=True):
     """
     ORM-модель пользователя для хранения в базе данных.
-    Атрибуты:
+    Attrs:
         id (int): Уникальный идентификатор пользователя (Primary Key).
         email (EmailStr): Электронная почта пользователя (уникальное поле).
         hash_password (str): Хэшированный пароль пользователя.
