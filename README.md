@@ -23,8 +23,8 @@ POSTGRES_USER=resumes
 POSTGRES_PASSWORD=resumes
 POSTGRES_HOST=localhost
 
-PRIVATE_KEY_PATH = <path/to/private.pem>
-PUBLIC_KEY_PATH = <path/to/public.pem>
+PRIVATE_KEY_PATH = <path/to/private.pem> # путь относительно контейнера
+PUBLIC_KEY_PATH = <path/to/public.pem> # путь относительно контейнера
 
 TESTING = 1 # указывается при проведении тестирования
 ```
