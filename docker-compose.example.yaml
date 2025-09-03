@@ -1,0 +1,54 @@
+version: '3.9'
+
+networks:
+  default:
+    name: resumes_network
+
+volumes:
+  postgres_data:
+
+services:
+  db:
+    image: postgres:17
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - resumes_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+    restart: always
+
+  auth_service:
+    build:
+      context: ./auth_service
+    env_file: ./auth_service/.env
+    ports:
+      - "7000:8000"
+    command: sh -c "alembic upgrade head && cd application && gunicorn main:app --workers 4 --worker-class main.BackendUvicornWorker --bind=0.0.0.0:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+
+  resumes_service:
+    build:
+      context: ./resumes_service
+    env_file: ./resumes_service/.env
+    ports:
+      - "8000:8000"
+    command: sh -c "alembic upgrade head && cd application && gunicorn main:app --workers 4 --worker-class main.BackendUvicornWorker --bind=0.0.0.0:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend/:/app/result_build/
