@@ -23,7 +23,9 @@ if not settings.TESTING:
         }
 
 
-app = FastAPI()
+app = FastAPI(
+    openapi_url="/api/v1/auth/openapi.json"
+)
 
 app.add_middleware(
     TrustedHostMiddleware,
