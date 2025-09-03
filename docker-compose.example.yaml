@@ -10,11 +10,9 @@ volumes:
 services:
   db:
     image: postgres:17
-    env_file: .env
+    env_file: .env # Либо создаем .env файл в корневой директории или можно пробросить .env из какого нибудь микросервиса
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - resumes_network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
@@ -49,6 +47,8 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ./frontend_resumes_project
+    env_file:
+      - ./frontend_resumes_project/.env
     volumes:
-      - ./frontend/:/app/result_build/
+      - ./frontend_resumes_project/:/app/result_build/
